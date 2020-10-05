@@ -34,10 +34,12 @@ bool LinkedList::addNode(int id, string str)
     if (head == NULL)
     {
         head = temp;
+		success = true;
     }
     else if (current->data.id > id && id != -1)
     {
         addHead(temp);
+		success = true;
     }
     else if (current->data.id < id && isDuplicate(id) == false)
     {
@@ -47,18 +49,16 @@ bool LinkedList::addNode(int id, string str)
             if (current->data.id > id && current->back->data.id != id)
             {
                 addMiddle(current, temp);
+				success = true;
             }
         }
         if (current->data.id < id)
         {
             addTail(current, temp);
+			success = true;
         }
     }
-    else
-    {
-        return false;
-    }        
-    return true;
+    return success;
 }
 
 bool LinkedList::deleteNode(int id)
@@ -94,17 +94,15 @@ bool LinkedList::deleteNode(int id)
 
 bool LinkedList::getNode(int id, Data* tempData)
 {
+	bool success = false;
     Node *current = head;
     if (findId(id, &current) == true)
     {
         tempData->id = current->data.id;
         tempData->data = current->data.data;
-        return true;
+        success = true;
     }
-    else
-    {
-        return false;
-    }
+	return success;
 }
 
 void LinkedList::printList(bool direction)
@@ -171,15 +169,13 @@ bool LinkedList::clearList()
 
 bool LinkedList::idExists(int id)
 {
+	bool success = false;
     Node *current = head;
     if (findId(id, &current) == true)
     {
-        return true;
+        success = true;
     }
-    else
-    {
-        return false;
-    }    
+	return success;
 }
 
 //private member functions
@@ -226,16 +222,17 @@ void LinkedList::delTail(Node *current)
 
 bool LinkedList::isDuplicate(int id)
 {
+	bool success = false;
     Node *current = head;
     while (current->forward != NULL)
     {
         if (current->forward->data.id == id)
         {
-            return true;
+            success = true;
         }
         current = current->forward;
     }
-    return false;
+    return success;
 }
 
 bool LinkedList::findId(int id, Node **current)
